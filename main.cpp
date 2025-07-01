@@ -1,9 +1,7 @@
-#include "rclcpp_function_traits.hpp"
-
 #include <iostream>
 
-// using namespace function_traits;
-using namespace rclcpp::function_traits;
+#include "function_traits.hpp"
+using namespace mylib::function_traits;
 
 template<class Callable>
 void fun(Callable&&)
@@ -16,11 +14,11 @@ void fun(Callable&&)
 
 void foo(int, long, char, float) {}
 
-struct S { void operator()(bool, float, double) {} };
+struct S { void operator()(bool, float, double) const{} };
 
 struct Bar
 {
-	void f(double, int) {}
+    void f(double, int) const {}
 };
 
 
@@ -39,11 +37,13 @@ int main(int argc, char **argv)
 	fun(S{});
 	fun(fun<decltype(foo)>);
 	Bar b;
+	fun(&Bar::f);
 	fun(std::bind(&Bar::f, &b, _1, _2));
 
-	static_assert(arity_comparator<4, decltype(foo)>::value, "arguments number wrong");
+	auto lambda = [](int, float){};
+	static_assert(arity_comparator<2, decltype(lambda)>::value, "arguments number is wrong");
+	static_assert(arity_comparator<4, decltype(foo)>::value, "arguments number iswrong");
 	static_assert(check_arguments<decltype(f), char, char>::value, "arguments not matching");
 	static_assert(same_arguments<decltype(std::bind(&Bar::f, &b, _1, _2)), void(double, int)>::value, "arguments not matching");
 
 }
-

@@ -1,8 +1,7 @@
-CXXFLAGS = -std=c++20 -Wall -Wextra
+CXXFLAGS = -std=c++11 -Wall -Wextra
 
 all: main
 
 .PHONY: clean
 clean:
 	rm main
-
