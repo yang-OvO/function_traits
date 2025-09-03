@@ -184,7 +184,7 @@ struct as_std_function_helper<R, std::tuple<Args...>>
     using type = std::function<R(Args...)>;
 };
 
-}; // namesapce detail
+}; // namespace detail
 
 template <
     typename FunctionT,
@@ -193,7 +193,7 @@ template <
 struct as_std_function
 {
     using type = typename detail::as_std_function_helper<
-        typename FunctionTraits::result_type,
+        typename FunctionTraits::return_type,
         typename FunctionTraits::arguments
     >::type;
 };
