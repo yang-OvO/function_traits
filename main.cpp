@@ -6,9 +6,14 @@ using namespace mylib::function_traits;
 template<class Callable>
 void fun(Callable&&)
 {
-	size_t size = function_traits<Callable>::arity;
+	constexpr size_t size = function_traits<Callable>::arity;
 	std::cout << "Callable with " << size << " params \n";
+
+#if defined(__GNUC__) || defined(__clang__)
 	std::cout << __PRETTY_FUNCTION__ << "\n";
+#elif defined(_MSC_VER)
+	std::cout << __FUNCSIG__ << "\n";
+#endif
 	std::cout << "--------------------------------------\n";
 }
 
@@ -33,7 +38,7 @@ int main(int argc, char **argv)
 	fun(f);
 	fun(foo);
 	fun(&foo);
-	fun(std::bind(&foo, _1, _2, _3, _4));
+	fun(std::bind(foo, _1, _2, _3, _4));
 	fun(S{});
 	fun(fun<decltype(foo)>);
 	Bar b;

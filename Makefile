@@ -1,7 +1,10 @@
-CXXFLAGS = -std=c++11 -Wall -Wextra
+CXXFLAGS = -std=c++17 -Wall -Wextra
+SOURCES=$(wildcard *.cpp)
+PROGRAMS=$(SOURCES:.cpp=)
 
-all: main
+all: $(PROGRAMS)
 
 .PHONY: clean
 clean:
-	rm main
+	rm $(PROGRAMS)
+
